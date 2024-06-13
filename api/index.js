@@ -21,10 +21,11 @@ const db = new pg.Client({
 
 
  app.use("/api/user", userRouter); 
- app.use("/api/auth", authRouter);
+ app.use("/api/auth", authRouter); 
  
 
 
  app.listen(port, () =>{
     console.log(`The server is running at ${port}`);
  })
+ export default db;

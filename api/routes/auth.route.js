@@ -1,7 +1,9 @@
 import express from 'express';
 import { signUp } from '../controllers/auth.controller.js';
+import db from '../index.js'; 
+
 const route = express.Router();
 
-route.post("/sign-up", signUp);
+route.post("/sign-up", (req, res) => signUp(req, res, db));
 
 export default route;
