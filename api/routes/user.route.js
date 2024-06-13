@@ -1,8 +1,8 @@
 import express from "express";
-import { userLogic } from "../controllers/user.controller.js"; 
+import { user } from "../controllers/user.controller.js"; 
 
-const userRouter = express.Router();
+const route = express.Router();
 
-userRouter.get("/", userLogic); 
+route.get("/", user); 
 
-export default userRouter;
+export default route;

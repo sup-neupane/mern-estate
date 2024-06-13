@@ -2,6 +2,7 @@ import express from "express";
 import pg from "pg";
 import bodyParser from "body-parser";
 import userRouter from "./routes/user.route.js";
+import authRouter from "./routes/auth.route.js";
 
 const db = new pg.Client({
     user: "postgres",
@@ -20,7 +21,8 @@ const db = new pg.Client({
 
 
  app.use("/api/user", userRouter); 
-
+ app.use("/api/auth", authRouter);
+ 
 
 
  app.listen(port, () =>{
