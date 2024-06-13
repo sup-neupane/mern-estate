@@ -1,5 +1,7 @@
 import express from "express";
 import pg from "pg";
+import bodyParser from "body-parser";
+import userRouter from "./routes/user.route.js";
 
 const db = new pg.Client({
     user: "postgres",
@@ -11,8 +13,14 @@ const db = new pg.Client({
 
  const app = express();
  const port = 3000;
- 
+
  db.connect();
+
+ app.use(bodyParser.urlencoded({ extended: true }));
+
+
+ app.use("/api/user", userRouter); 
+
 
 
  app.listen(port, () =>{
