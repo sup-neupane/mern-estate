@@ -17,6 +17,7 @@ const db = new pg.Client({
 
  db.connect();
 
+ app.use(express.json());
  app.use(bodyParser.urlencoded({ extended: true }));
 
 
