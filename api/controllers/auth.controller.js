@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import { promisify } from 'util';
+import { errorHandler } from '../utils/error.js';
 
-const saltRounds = 10;
+const saltRounds = 10; 
 const hashPassword = promisify(bcrypt.hash);
 
 export const signUp = async (req, res, db, next) => {
