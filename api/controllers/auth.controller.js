@@ -1,11 +1,17 @@
 import bcrypt from 'bcrypt';
 import { promisify } from 'util';
 import { errorHandler } from '../utils/error.js';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import { access } from 'fs';
+dotenv.config();
+
+
 
 const saltRounds = 10; 
 const hashPassword = promisify(bcrypt.hash);
 
-export const signUp = async (req, res, db, next) => {
+export const signUp = async (req, res, next, db) => {
     console.log(req.body);
 
     const { username, email, password } = req.body;
@@ -28,5 +34,42 @@ export const signUp = async (req, res, db, next) => {
         } else {
             next(err); // Pass the error to the error handling middleware
         }
+    }
+};
+
+
+export const signIn = async (req, res, next, db) => {
+    const { email, password } = req.body;
+
+    try {
+        const validUser = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+        
+
+       if (validUser.rows.length === 0) {
+        return next(errorHandler(404, "User not found"));
+    }
+
+        const [{ id:id ,email: validEmail, password: validPassword }] = validUser.rows;
+
+        const match = await bcrypt.compare(password, validPassword);
+        
+        if (!match) {
+            return next(errorHandler(401, "Invalid password"));
+        }
+        
+
+        const token = jwt.sign({ id: id }, process.env.JWT_SECRET);
+        const [{ password: pass, ...rest }] = validUser.rows;
+        res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest);
+
+        
+     
+      
+
+
+
+        // res.status(200).json({ message: "Sign-in successful" });
+    } catch (error) {
+        next(error);
     }
 };
