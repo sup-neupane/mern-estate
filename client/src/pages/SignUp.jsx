@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function SignIn() {
+export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ export default function SignIn() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch('/api/auth/signin', {
+      const res = await fetch('/api/auth/sign-up', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export default function SignIn() {
       }
       setLoading(false);
       setError(null);
-      navigate('/');
+      navigate('/sign-in');
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -41,7 +41,7 @@ export default function SignIn() {
   return (
 
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
+      <h1 className='text-3xl text-center font-semibold my-7'>Sign Up</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
       <input
           type='text'
@@ -74,9 +74,9 @@ export default function SignIn() {
         </button>
       </form>
       <div className='flex gap-2 mt-5'>
-        <p>Dont have an account?</p>
+        <p>Have an account?</p>
         <Link to={'/sign-up'}>
-          <span className='text-blue-700'>Sign up</span>
+          <span className='text-blue-700'>Sign In</span>
         </Link>
       </div>
       {error && <p className='text-red-500 mt-5'>{error}</p>}
