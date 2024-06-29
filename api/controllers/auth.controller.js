@@ -73,3 +73,39 @@ export const signIn = async (req, res, next, db) => {
         next(error);
     }
 };
+
+
+export const google = async (req, res, next,db) => {
+    try {
+        console.log(req.body);
+        const { email} = req.body;
+        const photo = req.body.photo || 'https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg';
+        const { name } = req.body;
+
+        const  newUsername = name.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-4) ;
+
+
+        const user = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+        if (user.rows.length === 0) {
+            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+            const hash = await hashPassword(generatedPassword, saltRounds);
+            const result = await db.query(
+                "INSERT INTO users (username, email, password, created_at, updated_at, avatar) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $4) RETURNING *",
+                [newUsername, email, hash, photo]
+            );
+            
+            const token = jwt.sign({ id: result.rows[0].id }, process.env.JWT_SECRET);  
+            res.cookie('access_token', token, { httpOnly: true }).status(201).json(result.rows[0]);
+            
+
+
+        } else {
+           
+            const token = jwt.sign({ id: user.rows[0].id }, process.env.JWT_SECRET);
+            res.cookie('access_token', token, { httpOnly: true }).status(200).json(user.rows[0]);
+
+        }
+    } catch (error) {
+      next(error)
+    }
+  }
