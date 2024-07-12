@@ -9,7 +9,7 @@ export default function PrivateRoute() {
             {currentUser ? (
                 <Outlet />
             ):(
-                <Navigate to='/sign-in' />
+                <Navigate to='/sign-in' /> 
             )}
         </div>
   )
