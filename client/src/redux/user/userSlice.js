@@ -6,6 +6,7 @@ const initialState = {
     loading: false,
 };
 
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -24,6 +25,7 @@ const userSlice = createSlice({
         }
     }
 });
+
 
 export const { signInStart, signInSuccess, signInFailure } = userSlice.actions;
 
