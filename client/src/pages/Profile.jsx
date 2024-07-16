@@ -63,7 +63,7 @@ export default function Profile() {
         <input onChange={(e)=>
           setFile(e.target.files[0])
         } type="file" ref= {fileRef} hidden accept='image/*'/>
-        <img onClick={()=>fileRef.current.click()} src={currentUser.avatar} alt="Profile" className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2' />
+        <img onClick={()=>fileRef.current.click()} src={formData.avatar || currentUser.avatar} alt="Profile" className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2' />
 
         <p className='text-sm self-center'>
           {fileUploadError ? (
