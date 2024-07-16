@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import dotenv from 'dotenv';
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 
@@ -30,6 +31,7 @@ const port = 3000;
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 
 
