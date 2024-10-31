@@ -15,12 +15,16 @@ export const updateUser = async (req, res, next, db) => {
            req.body.password = await hashPassword(req.body.password, saltRounds);
         }
 
+        // Fix the missing comma here
         const updatedUser = await db.query(
-            `UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *`
+            `UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *`, 
             [req.body.username, req.body.email, req.body.password, req.params.id]
         );
 
         const [{ password, ...user }] = updatedUser.rows;
+        
+        // You may want to send the response here
+        res.status(200).json({ user });
         
     } catch (error) {
         next(error);
